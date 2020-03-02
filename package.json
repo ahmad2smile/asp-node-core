@@ -1,6 +1,25 @@
 {
-  "name": "asp-node-core",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+	"name": "asp-node-core",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "node dist/index.js",
+		"dev": "concurrently \"npm:build\" \"npm:watch\"",
+		"build": "tsc --watch --preserveWatchOutput",
+		"watch": "tsc && nodemon -e html,css,js,json --ignore src/ dist/index.js"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^13.7.7",
+		"@typescript-eslint/eslint-plugin": "^2.21.0",
+		"@typescript-eslint/parser": "^2.21.0",
+		"concurrently": "^5.1.0",
+		"eslint": "^6.8.0",
+		"eslint-plugin-security": "^1.4.0",
+		"jest": "^25.1.0",
+		"nodemon": "^2.0.2",
+		"prettier": "^1.19.1",
+		"typescript": "^3.8.2"
+	}
 }
