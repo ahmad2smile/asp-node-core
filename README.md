@@ -2,7 +2,8 @@
 
 ## Intro (POC)
 
-Proof of Concept for Reflection based `class` registration and execution with methods.
+- Proof of Concept for Reflection based `class` registration and execution with methods
+- Dependency Injection for Services in Controllers.
 
 ## Example
 
