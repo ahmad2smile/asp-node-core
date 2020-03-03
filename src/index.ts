@@ -1,11 +1,24 @@
 import { createServer } from "http"
 
 import { controllers } from "./reflection/getControllers"
+import { getConstructorArguments } from "./utils/classUtils"
+import TasksService from "./services/tasksService"
+
+const scopedServices = [TasksService]
 
 
 createServer((request, response) => {
 	controllers.forEach(c => {
-		const controller = new c()
+		const controllerArguments = getConstructorArguments(c)
+		let controller
+
+		if (controllerArguments.length) {
+			const servicesInstances = scopedServices.filter(s => controllerArguments.includes(s.name.toUpperCase())).map(s => new s())
+			
+			controller = new c(...servicesInstances)
+		}else{
+			controller = new c()
+		}
 
 		for (const method in c.prototype) {
 			controller[method](request, response)

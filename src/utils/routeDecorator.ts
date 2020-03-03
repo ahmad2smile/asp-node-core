@@ -1,15 +1,17 @@
 import { ServerResponse, IncomingMessage } from "http"
 
-export const Route = (route: string) => {
-	return (target: any, key: string, descriptor: PropertyDescriptor) => {
+type Method<R> = (req: IncomingMessage, res: ServerResponse) => R
+
+export const Route = <C, R>(route: string) => {
+	return (_target: C, _key: string, descriptor: TypedPropertyDescriptor<Method<R>>): PropertyDescriptor => {
 		const original = descriptor.value
 
-		descriptor.value = (req: IncomingMessage, res: ServerResponse) => {
+		descriptor.value = function(req: IncomingMessage, res: ServerResponse): R {
 			if (req.url === route) {
-				return original(req, res)
-					.then((result: any) => {
+				return original.call(this, req, res)
+					.then((result: R) => {
 						res.writeHead(200, { "Content-Type": "application/json" })
-						res.end(result)
+						res.end(JSON.stringify(result))
 					})
 			}
 		}
